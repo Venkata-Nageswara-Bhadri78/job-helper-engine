@@ -9,6 +9,10 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// Import required route files here
+
+const authRoutes = require('./routes/authRoutes');
+
 const sqlite3 = require('sqlite3').verbose();
 const dbPath = path.resolve(__dirname, 'init/database.db');
 const db = new sqlite3.Database(dbPath, (err) => {
@@ -48,6 +52,11 @@ db.serialize(() => {
 });
 
 app.get('/', (req, res) => res.send('Server running'));
+
+
+
+
+app.use('/auth', authRoutes);
 
 
 const PORT = process.env.PORT || 5000;
