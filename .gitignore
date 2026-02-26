@@ -2,3 +2,4 @@ notes
 README.md
 /backend/node_modules
 /backend/.env
+/backend/src/databases/database.db
