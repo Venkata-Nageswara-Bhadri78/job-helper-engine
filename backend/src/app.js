@@ -11,10 +11,12 @@ app.use(bodyParser.json());
 
 // Import required route files here
 const authRoutes = require('./routes/authRoutes');
+const jobRoutes = require('./routes/jobRoutes');
 
 app.get('/', (req, res) => res.send('Server running'));
 
 app.use('/auth', authRoutes);
+app.use('/jobs', jobRoutes);
 
 
 
