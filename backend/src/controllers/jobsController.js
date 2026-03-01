@@ -1,6 +1,4 @@
 const jobModels = require('../models/jobModels');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 exports.createJob = (req, res) => {
     const { title, company_name, description, apply_link, category, location, expiry_date } = req.body;
@@ -28,7 +26,7 @@ exports.createJob = (req, res) => {
     
     jobModels.getApplyLink(apply_link, (err, isPresent) => {
         if(err){
-            return res.status(501).json({success: false, message: "ERROR IN CHECKING APPLY LINK"});
+            return res.status(500).json({success: false, message: "ERROR IN CHECKING APPLY LINK"});
         }
         if(isPresent){
             return res.status(401).json({success: false, message: "JOB ALREADY POSTED BY SOMEONE ELSE"});
@@ -46,9 +44,10 @@ exports.createJob = (req, res) => {
 
 exports.deleteJobById = (req, res) => {
     const id = req.params.id;
-    jobModels.deleteJobById(id, (err) => {
+    const user_id = req.user.id;
+    jobModels.deleteJobById(user_id, id, (err) => {
         if(err){
-            return res.status(501).json({success: false, message: "ERROR IN DELETING THE JOB - TRY AGAIN"});
+            return res.status(500).json({success: false, message: "ERROR IN DELETING THE JOB - TRY AGAIN"});
         }
         return res.status(200).json({success: true, message: "JOB POSTING DELETED SUCESSFULLY"});
     })
@@ -58,7 +57,7 @@ exports.getAllJobsById = (req, res) => {
     const user_id = req.user.id;
     jobModels.getAllJobsById(user_id, (err, data) => {
         if(err){
-            return res.status(501).json({success: false, data: null, message: "ERROR IN GETTING JOBS POSTED BY YOU"})
+            return res.status(500).json({success: false, data: null, message: "ERROR IN GETTING JOBS POSTED BY YOU"})
         }
         if(!data){
             return res.status(404).json({success: false, data: null, message: "NO JOBS POSTED BY YOU"});
@@ -77,7 +76,7 @@ exports.getOneJobById = (req, res) => {
     }
     jobModels.getOneJobById(jobData, (err, data) => {
         if(err){
-            return res.status(501).json({success: false, data: null, message: "ERROR IN GETTING JOB DATA"});
+            return res.status(500).json({success: false, data: null, message: "ERROR IN GETTING JOB DATA"});
         }
         if(!err && !data){
             return res.status(404).json({success: false, data: null, message: "INVALID JOB ID BY YOU"});

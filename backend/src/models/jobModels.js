@@ -23,7 +23,7 @@ exports.getApplyLink = (apply_link, callback) => {
     })
 }
 exports.getAllJobsById = (user_id, callback) => {
-    const query = `Select * from jobs where posted_by = ?;`;
+    const query = `Select * from jobs where posted_by = ? and is_deleted = 0;`;
     db.all(query, [user_id], (err, rows) => {
         if(err){
             return callback(err, null);
@@ -31,9 +31,9 @@ exports.getAllJobsById = (user_id, callback) => {
         return callback(null, rows);
     })
 }
-exports.deleteJobById = (id, callback) => {
-    const query = `DELETE FROM jobs where id = ?`;
-    db.run(query, [], (err) => {
+exports.deleteJobById = (user_id, id, callback) => {
+    const query = `UPDATE jobs SET is_deleted = 1 WHERE id = ? AND posted_by = ?`;
+    db.run(query, [id, user_id], (err) => {
         if(err){
             return callback(err);
         }

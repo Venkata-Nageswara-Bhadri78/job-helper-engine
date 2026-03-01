@@ -1,7 +1,7 @@
 const db = require("../config/db");
 
 exports.getJobsByStatus = (status, callback) => {
-    let query = "SELECT * FROM jobs";
+    let query = "SELECT * FROM jobs where is_deleted = 0;";
     let array = [];
 
     if(status==undefined){
@@ -30,7 +30,7 @@ exports.updateJobStatus = (job_id, newStatus, callback) => {
 }
 
 exports.deletePostedJob = (job_id, callback) => {
-    const query = `DELETE FROM jobs where id = ?`;
+    const query = `UPDATE jobs SET is_deleted = 1 WHERE id = ?`;
     db.run(query, [job_id], (err) => {
         if(err){
             return callback(err);

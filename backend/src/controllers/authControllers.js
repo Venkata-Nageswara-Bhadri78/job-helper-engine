@@ -15,8 +15,8 @@ exports.registerUser = async (req, res) => {
         if(!password || password.length<8){
             return res.status(400).json({success: false, message: "password length should be atleast 8"});
         }
-        if(!["user", "admin"].includes(role)){
-            return res.status(400).json({success: false, message: "Invalid Role"});
+        if(role !== "user") {
+            return res.status(403).json({success: false, message: "Invalid role" });
         }
 
         const saltRounds = 10;
