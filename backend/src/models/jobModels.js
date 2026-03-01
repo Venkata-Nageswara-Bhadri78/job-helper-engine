@@ -31,7 +31,15 @@ exports.getAllJobsById = (user_id, callback) => {
         return callback(null, rows);
     })
 }
-
+exports.deleteJobById = (id, callback) => {
+    const query = `DELETE FROM jobs where id = ?`;
+    db.run(query, [], (err) => {
+        if(err){
+            return callback(err);
+        }
+        return callback(null);
+    })
+}
 exports.getOneJobById = (jobData, callback) => {
     const query = `SELECT * from jobs where id = ? and posted_by = ?`;
     db.get(query, [jobData.job_id, jobData.user_id], (err, row) => {
@@ -44,17 +52,4 @@ exports.getOneJobById = (jobData, callback) => {
         return callback(null, row);
     })
 
-}
-
-exports.getAllJobsByAllUsers = (callback) => {
-    const query = `SELECT * FROM jobs where status != 'PENDING'`;
-    db.all(query, (err, data) => {
-        if(err){
-            return callback(err, null);
-        }
-        if(!data){
-            return callback(null, null);
-        }
-        return callback(null, data);
-    })
 }

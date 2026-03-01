@@ -44,6 +44,16 @@ exports.createJob = (req, res) => {
     })
 }
 
+exports.deleteJobById = (req, res) => {
+    const id = req.params.id;
+    jobModels.deleteJobById(id, (err) => {
+        if(err){
+            return res.status(501).json({success: false, message: "ERROR IN DELETING THE JOB - TRY AGAIN"});
+        }
+        return res.status(200).json({success: true, message: "JOB POSTING DELETED SUCESSFULLY"});
+    })
+}
+
 exports.getAllJobsById = (req, res) => {
     const user_id = req.user.id;
     jobModels.getAllJobsById(user_id, (err, data) => {
@@ -71,18 +81,6 @@ exports.getOneJobById = (req, res) => {
         }
         if(!err && !data){
             return res.status(404).json({success: false, data: null, message: "INVALID JOB ID BY YOU"});
-        }
-        return res.status(200).json({success: true, data: data, message: "JOB DATA FOUND"})
-    })
-}
-
-exports.getAllJobsByAllUsers = (req, res) => {
-    jobModels.getAllJobsByAllUsers((err, data) => {
-        if(err){
-            return res.status(501).json({success: false, data: null, message: "ERROR IN GETTING ALL JOBS INFO"});
-        }
-        if(!data){
-            return res.status(404).json({success: false, data: null, message: "NO JOBS POSTED BY ANYONE"});
         }
         return res.status(200).json({success: true, data: data, message: "JOB DATA FOUND"})
     })

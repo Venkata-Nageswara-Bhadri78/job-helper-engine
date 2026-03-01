@@ -12,12 +12,13 @@ app.use(bodyParser.json());
 // Import required route files here
 const authRoutes = require('./routes/authRoutes');
 const jobRoutes = require('./routes/jobRoutes');
-
-app.get('/', (req, res) => res.send('Server running'));
+const publicRoutes = require('./routes/publicRoutes');
+const adminRoutes = require("./routes/adminRoutes");
 
 app.use('/auth', authRoutes);
 app.use('/jobs', jobRoutes);
-
+app.use('/public', publicRoutes);
+app.use('/admin', adminRoutes);
 
 
 const PORT = process.env.PORT || 5000;
