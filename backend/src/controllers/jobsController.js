@@ -56,3 +56,34 @@ exports.getAllJobsById = (req, res) => {
         return res.status(200).json({success: true, data: data, message: "POSTED JOBS SUCESSFULLY EXTRACTED"})
     })
 }
+
+exports.getOneJobById = (req, res) => {
+    const user_id = req.user.id;
+    const job_id = req.params.id;
+
+    const jobData = {
+        user_id: user_id,
+        job_id: job_id
+    }
+    jobModels.getOneJobById(jobData, (err, data) => {
+        if(err){
+            return res.status(501).json({success: false, data: null, message: "ERROR IN GETTING JOB DATA"});
+        }
+        if(!err && !data){
+            return res.status(404).json({success: false, data: null, message: "INVALID JOB ID BY YOU"});
+        }
+        return res.status(200).json({success: true, data: data, message: "JOB DATA FOUND"})
+    })
+}
+
+exports.getAllJobsByAllUsers = (req, res) => {
+    jobModels.getAllJobsByAllUsers((err, data) => {
+        if(err){
+            return res.status(501).json({success: false, data: null, message: "ERROR IN GETTING ALL JOBS INFO"});
+        }
+        if(!data){
+            return res.status(404).json({success: false, data: null, message: "NO JOBS POSTED BY ANYONE"});
+        }
+        return res.status(200).json({success: true, data: data, message: "JOB DATA FOUND"})
+    })
+}
