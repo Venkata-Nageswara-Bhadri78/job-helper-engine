@@ -3,7 +3,6 @@ const adminModel = require('../models/adminModels');
 
 exports.fetchAllJobs = (req, res) => {
     const status = req.query.status;
-    console.log(status);
     if(![undefined, "pending", "approved", "rejected"].includes(status)){
         return res.status(401).json({success: false, message: "INVALID STATUS TYPE"});
     }

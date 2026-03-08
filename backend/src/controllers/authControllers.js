@@ -3,11 +3,11 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.registerUser = async (req, res) => {
-    try{
+    try{ 
         const { name, email, password, role } = req.body;
         // Check all Validations
         if(!name || name.length<2){
-            return res.status(400).json({success: false, message: "Name length should be atleast 2"});
+            return res.status(400).json({success: false, message: "Name is mandatory or it's length must be atleast 2"});
         }
         if(!email || !email.includes("@")){
             return res.status(400).json({success: false, message: "Enter a proper email address"});
@@ -15,8 +15,9 @@ exports.registerUser = async (req, res) => {
         if(!password || password.length<8){
             return res.status(400).json({success: false, message: "password length should be atleast 8"});
         }
-        if(role !== "user") {
-            return res.status(403).json({success: false, message: "Invalid role" });
+        const allowedRoles = ["user", "admin"];
+        if (!allowedRoles.includes(role)) {
+            return res.status(403).json({ success: false, message: "Invalid role" });
         }
 
         const saltRounds = 10;

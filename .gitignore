@@ -2,3 +2,7 @@ notes
 /backend/node_modules
 /backend/.env
 /backend/src/databases/database.db
+/backend/Dockerfile
+/backend/.dockerignore
+my-backend.tar
+.gitignore

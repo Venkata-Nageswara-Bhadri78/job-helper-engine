@@ -3,7 +3,7 @@ const jobModels = require('../models/jobModels');
 exports.createJob = (req, res) => {
     const { title, company_name, description, apply_link, category, location, expiry_date } = req.body;
     const user_id = req.user.id;
-    console.log(user_id);
+
     // Validation Check
     if(!title){
         return res.status(400).json({success: false, message: "JOB TITLE SHOULD NOT BE EMPTY"})
